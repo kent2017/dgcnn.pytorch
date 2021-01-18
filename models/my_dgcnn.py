@@ -326,9 +326,9 @@ class MyDGCNN_Seg(nn.Module):
         self.backbone = Backbone_Seg(args)      # (batch, emb_dims+n_edgeconvs*64, num_points)
 
         self.smlp = nn.Sequential(SharedMLP1d([args.emb_dims+args.n_edgeconvs_backbone*64, 256], args.norm),
-                                 nn.Dropout(args.dropout),
+                                 nn.Dropout2d(args.dropout),        # dropout the whole channel
                                  SharedMLP1d([256, 256], args.norm),
-                                 nn.Dropout(args.dropout),
+                                 nn.Dropout2d(args.dropout),
                                  SharedMLP1d([256, 128], args.norm))
 
         self.fc = nn.Conv1d(128, args.output_channels, kernel_size=1, bias=True)
