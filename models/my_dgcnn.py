@@ -321,7 +321,7 @@ class MyDGCNN_Seg(nn.Module):
         super(MyDGCNN_Seg, self).__init__()
 
         if args.use_stn:
-            self.transform_net = STN(args.k, args.norm)
+            self.stn = STN(args.k, args.norm)
 
         self.backbone = Backbone_Seg(args)      # (batch, emb_dims+n_edgeconvs*64, num_points)
 
@@ -341,7 +341,7 @@ class MyDGCNN_Seg(nn.Module):
         :return: dict
         """
         # transform
-        if hasattr(self, "STN"):
+        if hasattr(self, "stn"):
             t = self.stn(x)
             x = torch.bmm(t, x)
         else:
